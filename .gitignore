@@ -1,0 +1,6 @@
+*.py[cod]
+*.dat
+*.utf8
+*.lprof
+*.sh
+perceptron_ct/
