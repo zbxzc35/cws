@@ -6,10 +6,12 @@ import weight
 import os
 import time
 import re
+import feature_template
 
 punctuation = u'、，。！？：；（）《》“”'
 
 class CWS:
+    feature_num = feature_template.feature_num
 
     def tick(self):
 	self.time = time.time()
@@ -19,7 +21,7 @@ class CWS:
 	self.tick()
 	return t
 
-    def train(self, train_samples, P = 1):
+    def train(self, train_samples, P = 10):
 	print '-'*50
 	print 'Training started...'
 	self.tick()
@@ -56,7 +58,7 @@ class CWS:
 	self.tick()
 	if len(path) > 0 and path[-1] != '/': path.append('/')
 	if not os.path.exists(path): os.mkdir(path)
-	for i in xrange(0, 14):
+	for i in xrange(0, self.feature_num):
 	    with open('dat/w%d.dat' % (i+1), 'w') as fout:
 		for feature in weight.W.v[i]:
 		    if weight.W.v[i][feature] == 0: continue
@@ -71,11 +73,11 @@ class CWS:
 	self.tick()
 	if len(path) > 0 and path[-1] != '/': path.append('/')
 	if not os.path.exists(path): return
-	for i in xrange(0, 14):
+	for i in xrange(0, self.feature_num):
 	    with open(path + 'w%d.dat' % (i+1), 'r') as fin:
 		lines = fin.readlines()
 		for line in lines:
-		    (feature, w) = line.rstrip().decode('utf8').split('\t')
+		    feature, w = line.rstrip().decode('utf8').split('\t')
 		    w = float(w)
 		    weight.W.v[i][feature] = w
 	print 'Loaded.'

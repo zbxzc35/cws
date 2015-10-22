@@ -2,17 +2,28 @@
 
 from cws import *
 import os
+import sys
 
 def seg2tag(seg):
     tags = ''
     for s in seg:
-	tags += 'B'
-	for c in s[1:]:
-	   tags += 'I'
+	if len(s) == 1:
+	    tags += 'S'
+	else:
+	    tags += 'B'
+	    for c in s[1:-1]:
+		tags += 'M'
+	    tags += 'E'
     return tags
 
 if __name__ == '__main__':
-    train_path = '../training/pku_training.utf8'
+    if len(sys.argv) > 1:
+	train_times = int(sys.argv[1])
+    else:
+	train_times = 10
+    print 'Preparing to train %d times.' % train_times
+
+    train_path = '/home/huangshenno1/cws/training/pku_training.utf8'
     with open(train_path, 'r') as train_file:
 	lines = train_file.readlines()
     train_samples = []
@@ -23,7 +34,7 @@ if __name__ == '__main__':
 	train_samples.append((''.join(segments), seg2tag(segments)))
 
     cws = CWS()	
-    cws.train(train_samples, 6)
+    cws.train(train_samples, train_times)
     cws.save()
 # cws.load()
     print u'/'.join(cws.predict(u'南京市长江大桥'))
