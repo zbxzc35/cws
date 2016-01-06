@@ -1,6 +1,9 @@
 *.py[cod]
 *.dat
-*.utf8
-*.lprof
 *.sh
-analysis/
+*.pkl
+*.cpkl
+
+training/
+testing/
+embedding/

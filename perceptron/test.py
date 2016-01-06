@@ -10,10 +10,10 @@ if __name__ == '__main__':
     else:
 	output_path = '/home/huangshenno1/cws/result.utf8'
 
-    test_path = '/home/huangshenno1/cws/testing/pku_test.utf8'
+    test_path = '/home/huangshenno1/cws/testing/CTB.gb'
     with open(test_path, 'r') as test_file:
 	lines = test_file.readlines()
-    sentences = [line.strip().decode('utf-8') for line in lines]
+    sentences = [''.join(line.strip().decode('gb2312').split()) for line in lines]
 
     cws = CWS()	
     cws.load()
