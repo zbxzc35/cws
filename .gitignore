@@ -3,6 +3,7 @@
 *.sh
 *.pkl
 *.cpkl
+*.np[yz]
 
 training/
 testing/

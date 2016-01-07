@@ -5,10 +5,6 @@ def shuffle(lol, seed):
 	random.seed(seed)
 	random.shuffle(l)
 
-def minibatch(l, bs):
-    out = [l[max(0,i-bs):i] for i in xrange(2, len(l))]
-    return out
-
 def contextwin(l, win):
     lpadded = win/2 * [1] + l + win/2 * [2]
     out = [lpadded[i:i+win] for i in xrange(len(l))]
@@ -25,9 +21,12 @@ def evaluate(pred_y, y, beta = 1.0):
 	    if y1[i]: test_word_count += 1
 	    if y2[i]: true_word_count += 1
 	    if y2[i] > 0 and y1[i] == y2[i]: right += 1
-    p = 1.0 * right / test_word_count
-    r = 1.0 * right / true_word_count
-    f = (1+beta)*p*r / (beta*p+r)
+    if right == 0:
+	p = r = f = 0.0
+    else:
+	p = 1.0 * right / test_word_count
+	r = 1.0 * right / true_word_count
+	f = (1+beta)*p*r / (beta*p+r)
     return p, r, f
 
 def label2len(label):

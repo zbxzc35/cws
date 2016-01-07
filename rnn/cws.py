@@ -3,9 +3,9 @@ import theano
 import theano.tensor as T
 from rnn import RNN
 from utils import *
-import cPickle
 import time
 import sys
+import os
 
 class CWS:
     def __init__(self, s):
@@ -37,7 +37,7 @@ class CWS:
 
 	    pred_y = self.predict(valid_lex)
 	    p, r, f = evaluate(pred_y, valid_label)
-	    print '[learning] epoch %i >> P: %2.2f%% R: %2.2f%% F: %2.2f%%' % (e+1, p*100., r*100., f*100.), '<< %s used \n' % time_format(time.time() - tic),
+	    print '[learning] epoch %i >> P: %2.2f%% R: %2.2f%% F: %2.2f%%' % (e+1, p*100., r*100., f*100.), '<< %s used' % time_format(time.time() - tic)
 	    
 	    if f > best_f:
 		best_f = f
@@ -53,10 +53,9 @@ class CWS:
 	return y
 
     def save(self):
-	with open('model.cpkl', 'wb') as f:
-	    cPickle.dump(self.rnn, f)
+	if not os.path.exists('params'): os.mkdir('params')
+	self.rnn.save() 
 
     def load(self):
-	with open('model.cpkl', 'rb') as f:
-	    self.rnn = cPickle.load(f)
+	self.rnn.load()
 

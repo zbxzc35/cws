@@ -40,3 +40,11 @@ class RNN:
 	self.fit = theano.function(inputs = [idxs, y, lr], outputs = nll, updates = updates)
 	self.normalize = theano.function(inputs = [], updates = {self.emb: self.emb / T.sqrt((self.emb**2).sum(axis=1)).dimshuffle(0, 'x')})
 
+    def save(self):
+	for param, name in zip(self.params, self.names):
+	    np.save('params/'+name+'.npy', param.get_value())
+
+    def load(self):
+	for param, name in zip(self.params, self.names):
+	    param.set_value(np.load('params/'+name+'.npy'))
+
